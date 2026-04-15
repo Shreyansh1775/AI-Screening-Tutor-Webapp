@@ -4,7 +4,8 @@ import { connectDB } from "@/lib/mongodb";
 import Report from "@/models/Reports";
 
 export async function GET() {
-  const token = cookies().get("token")?.value;
+  const cookieStore = await cookies();
+const token = cookieStore.get("token")?.value;
 
   if (!token) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
