@@ -9,6 +9,7 @@ type Message = {
 };
 
 export default function InterviewPage() {
+  const [started, setStarted] = useState(false);
   const startedRef = useRef(false);
   const MAX_QUESTIONS = 2;
   const [status, setStatus] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
@@ -71,20 +72,18 @@ export default function InterviewPage() {
   };
 
   // ─── on mount: speak first message then open mic ───
-
-// ✅ FIXED intro effect (speaks then opens mic)
-useEffect(() => {
+const handleStartInterview = async () => {
   if (startedRef.current) return;
 
   startedRef.current = true;
+  setStarted(true);
 
   const firstMessage = conversation[0]?.text;
 
   if (firstMessage) {
-    speakThenListen(firstMessage);
+    await speakThenListen(firstMessage);
   }
-}, []);
-
+};
   // ─── update display while mic is open ───
   useEffect(() => {
     if (status !== "listening") return;
@@ -194,19 +193,41 @@ useEffect(() => {
     handleEvaluation(conversationRef.current);
   };
 
+
+  if (!started) {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
-      {/* Top Bar */}
-      <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
-        <h1 className="text-lg font-semibold">AI Tutor Interview</h1>
-        <button
-          onClick={handleEndInterview}
-          className="text-red-600 hover:underline"
-        >
-          End Interview
-        </button>
-      </div>
+      {/* Intro Screen */}
+      <div className="flex flex-1 items-center justify-center">
+        <div className="max-w-xl text-center space-y-6">
 
+          <h2 className="text-3xl font-bold">
+            AI Tutor Interview
+          </h2>
+
+          <p className="text-gray-600">
+            This AI interview evaluates your teaching skills, communication,
+            confidence, and response quality through real-time interaction.
+            Click below when you are ready to begin.
+          </p>
+
+          <button
+            onClick={handleStartInterview}
+            className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700"
+          >
+            🚀 Start Interview
+          </button>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+  return (
+    
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* Top Bar */}
       {/* Main Layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* LEFT: Conversation */}
@@ -238,15 +259,29 @@ useEffect(() => {
         <div className="w-2/5 border-l bg-white p-6 flex flex-col justify-between">
                           
           {/* Status */}
-          <div>
-            <h2 className="text-sm text-gray-500 mb-2">Status</h2>
-            <p className="text-lg font-medium">
-              {status === "listening" && "🎤 Listening..."}
-              {status === "thinking" && "⏳ Processing..."}
-              {status === "speaking" && "🔊 AI Speaking..."}
-              {status === "idle" && "✅ Ready"}
-            </p>
-          </div>
+<div>
+  
+  {/* Top Row: Status + End Interview */}
+  <div className="flex justify-between items-center mb-2">
+    <h2 className="text-sm text-gray-500">Status</h2>
+
+    <button
+      onClick={handleEndInterview}
+      className="text-red-600 hover:underline"
+    >
+      End Interview
+    </button>
+  </div>
+
+  {/* Status Value */}
+  <p className="text-lg font-medium">
+    {status === "listening" && "🎤 Listening..."}
+    {status === "thinking" && "⏳ Processing..."}
+    {status === "speaking" && "🔊 AI Speaking..."}
+    {status === "idle" && "✅ Ready"}
+  </p>
+
+</div>
 
         
           {/* Voice Visualizer */}

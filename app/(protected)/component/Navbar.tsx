@@ -6,59 +6,51 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const linkStyle = (path: string) =>
-    `cursor-pointer px-4 py-2 rounded-md transition ${
+  const linkClass = (path: string) =>
+    `cursor-pointer ${
       pathname === path
-        ? "bg-black text-white"
-        : "text-gray-700 hover:bg-gray-200"
+        ? "text-indigo-600 font-semibold"
+        : "text-gray-600 hover:text-indigo-600"
     }`;
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-    });
-
+    await fetch("/api/auth/logout");
     router.push("/login");
   };
 
   return (
-    <div className="w-full border-b bg-white px-6 py-3 flex justify-between items-center shadow-sm">
-      <h1
-        className="font-semibold text-lg cursor-pointer"
-        onClick={() => router.push("/")}
-      >
-        AI Screening Tutor
-      </h1>
+    <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
+      <h1 className="text-lg font-semibold">AI Interview Platform</h1>
 
-      <div className="flex gap-3 items-center">
-        <span className={linkStyle("/")} onClick={() => router.push("/")}>
+      <div className="flex items-center space-x-6">
+        <span onClick={() => router.push("/")} className={linkClass("/")}>
           Home
         </span>
 
         <span
-          className={linkStyle("/interview")}
           onClick={() => router.push("/interview")}
+          className={linkClass("/interview")}
         >
           Interview
         </span>
 
         <span
-          className={linkStyle("/report")}
           onClick={() => router.push("/report")}
+          className={linkClass("/report")}
         >
           Reports
         </span>
 
         <span
-          className={linkStyle("/profile")}
           onClick={() => router.push("/profile")}
+          className={linkClass("/profile")}
         >
           Profile
         </span>
 
         <button
           onClick={handleLogout}
-          className="ml-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+          className="text-red-600 hover:underline"
         >
           Logout
         </button>

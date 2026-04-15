@@ -23,7 +23,7 @@ export default function LoginPage() {
       });
 
       if (res.ok) {
-        router.push("/interview");
+        router.push("/");
       } else {
         alert("Invalid login");
         setLoading(false);
