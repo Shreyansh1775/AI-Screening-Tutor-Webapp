@@ -1,3 +1,466 @@
+# **AI Tutor Screener — Project Report**
+
+## **1. Project Overview**
+
+**Project Title:**
+
+**AI Tutor Screener — Intelligent Voice-Based Interview & Evaluation System**
+
+**Selected Problem:**
+
+**Problem 3 — The AI Tutor Screener**
+
+This project implements an AI-powered interviewer capable of conducting structured tutor screening conversations through voice interaction and automatically evaluating candidates based on communication quality, teaching ability, and interview behaviour.
+
+The system simulates the first round of tutor interviews traditionally conducted by human interviewers at scale. Instead of manual screening calls, candidates interact with an AI interviewer that:
+
+* asks adaptive questions,
+* listens to spoken responses,
+* analyzes behavioural signals,
+* evaluates teaching capability,
+* generates a structured hiring recommendation.
+
+The application is fully deployed and accessible via a public URL, meeting the core requirement of the assignment.
+
+---
+
+# **2. Problem Understanding**
+
+Cuemath hires hundreds of tutors monthly. Manual screening introduces several operational challenges:
+
+* High interviewer cost
+* Limited scalability
+* Inconsistent evaluation criteria
+* Time delays in candidate processing
+* Difficulty assessing soft skills objectively
+
+The key insight behind this project is:
+
+> Tutor quality depends more on **communication clarity, patience, warmth, and explanation ability** than pure subject knowledge.
+
+Therefore, the solution focuses on  **human-centric evaluation** , not academic testing.
+
+---
+
+# **3. Objectives**
+
+The system aims to:
+
+1. Conduct natural AI-driven interviews.
+2. Enable real voice interaction (not chat).
+3. Evaluate soft teaching skills.
+4. Analyze confidence and expression.
+5. Produce structured hiring feedback.
+6. Deliver a professional candidate experience.
+
+---
+
+# **4. System Features**
+
+---
+
+## **4.1 Conversational AI Interview**
+
+The application simulates a real interview environment.
+
+### Capabilities
+
+* AI introduces itself professionally.
+* Asks pedagogically meaningful questions.
+* Maintains conversational continuity.
+* Responds dynamically based on answers.
+* Supports follow-up questioning.
+
+Example prompts:
+
+* Explain fractions to a child.
+* Handle a confused student scenario.
+* Describe teaching methodology.
+
+This aligns directly with Cuemath's screening goals.
+
+---
+
+## **4.2 Voice Interaction System**
+
+A core design decision was prioritizing  **speech over typing** , reflecting real tutoring conditions.
+
+### Implemented Features
+
+* Browser microphone capture
+* Continuous speech recognition
+* Real-time transcript display
+* Manual **Submit Answer** control
+* AI voice responses via speech synthesis
+
+### Interview Flow
+
+1. AI speaks question.
+2. Microphone activates automatically.
+3. Candidate answers naturally.
+4. Transcript appears live.
+5. Candidate submits when ready.
+
+This avoids premature submission issues common in voice systems.
+
+---
+
+## **4.3 Intelligent Interview State Management**
+
+The system maintains a controlled interview lifecycle:
+
+* Speaking State
+* Listening State
+* Thinking/Evaluating State
+* Idle/Ready State
+
+This prevents:
+
+* overlapping speech,
+* interrupted recording,
+* frozen listening sessions.
+
+---
+
+## **4.4 Facial Expression & Camera Evaluation (Advanced Feature)**
+
+A live camera panel runs alongside the interview.
+
+### Purpose
+
+To approximate human interviewer observations such as:
+
+* Confidence
+* Eye contact
+* Engagement level
+* Emotional expressiveness
+* Speaking comfort
+
+### Implementation
+
+* Browser webcam access
+* Live video preview
+* Real-time interview presence simulation
+* Architecture ready for facial signal extraction
+
+This feature directly enhances realism and interviewer signal quality.
+
+---
+
+## **4.5 Structured AI Evaluation Engine**
+
+After completion, the interview conversation is sent to an evaluation service.
+
+### Assessment Dimensions
+
+The AI generates structured feedback across:
+
+* Communication Clarity
+* Teaching Simplicity
+* Patience
+* Warmth & Empathy
+* English Fluency
+* Confidence Indicators
+
+### Output Includes
+
+* Score breakdown
+* Qualitative observations
+* Supporting conversational evidence
+* Hiring recommendation
+
+This transforms subjective interviews into consistent evaluations.
+
+---
+
+## **4.6 Candidate Experience Design**
+
+Special attention was given to candidate psychology.
+
+### Design Goals
+
+* Welcoming introduction
+* Non-robotic interaction
+* Clear status indicators
+* Visual feedback during listening
+* Reduced anxiety during speaking
+
+Interview UX mimics a professional online assessment platform.
+
+---
+
+## **4.7 Progress Tracking**
+
+The system displays:
+
+* Current question number
+* Interview completion status
+* Active interaction state
+
+This keeps candidates oriented and reduces confusion.
+
+---
+
+## **4.8 Error Handling & Edge Cases**
+
+Real interview conditions are messy. The system handles:
+
+* Interrupted audio
+* Speech recognition abort events
+* Navigation away and back
+* Empty responses
+* Partial speech capture
+* Browser speech conflicts
+
+Cleanup logic ensures microphone and speech systems reset safely.
+
+---
+
+## **4.9 Security Considerations**
+
+Security was treated as a core requirement.
+
+Implemented safeguards:
+
+* API keys stored in server environment variables
+* No credentials exposed to browser
+* Backend-only AI API communication
+* Secure evaluation requests
+* Clean public repository compliance
+
+The deployed application follows secure production practices.
+
+---
+
+# **5. Technical Architecture**
+
+---
+
+## **Frontend**
+
+* Next.js App Router
+* TypeScript
+* React Hooks
+* Web Speech API
+* Web Camera API
+* Tailwind CSS UI system
+
+---
+
+## **Backend**
+
+* API Routes
+  * `/api/interview` — conversational response generation
+  * `/api/evaluate` — final assessment engine
+
+---
+
+## **AI Components**
+
+* Speech-to-Text processing
+* Conversational LLM reasoning
+* Structured rubric evaluation
+* Evidence extraction from dialogue
+
+---
+
+## **Deployment**
+
+* Cloud deployed
+* Publicly accessible live URL
+* Production build environment
+
+---
+
+# **6. Key Design Decisions & Tradeoffs**
+
+---
+
+### Decision 1 — Voice First, Not Chat
+
+**Why:** Tutoring happens verbally.
+
+**Tradeoff:** Increased complexity managing speech states.
+
+---
+
+### Decision 2 — Manual Submit Button
+
+**Why:** Prevents cutting off candidates mid-answer.
+
+**Result:** Better candidate control and fairness.
+
+---
+
+### Decision 3 — Camera Integration
+
+**Why:** Human interviewers judge non-verbal behaviour.
+
+**Impact:** Moves system closer to real screening conditions.
+
+---
+
+### Decision 4 — Structured Evaluation Instead of Pass/Fail
+
+**Why:** Hiring decisions need explainability.
+
+---
+
+### Decision 5 — Interview State Machine
+
+**Why:** Avoid asynchronous audio bugs common in voice apps.
+
+---
+
+# **7. Development Process (SDLC Approach)**
+
+The project followed a structured engineering process:
+
+### 1. Analysis
+
+* Studied all three problem statements.
+* Selected highest impact system (Tutor Screener).
+
+### 2. Requirement Understanding
+
+* Identified evaluation dimensions.
+* Mapped human interviewer behaviour.
+
+### 3. System Design
+
+* Conversation engine
+* Voice pipeline
+* Evaluation pipeline
+* UX flow
+
+### 4. Implementation
+
+* Interview UI
+* Speech handling
+* Backend APIs
+* Camera integration
+
+### 5. Testing
+
+* Navigation edge cases
+* Speech interruptions
+* Submission timing issues
+* Audio lifecycle cleanup
+
+### 6. Deployment
+
+* Secure environment setup
+* Public accessibility testing
+
+---
+
+# **8. Challenges Faced**
+
+### Speech Recognition Stability
+
+Browsers frequently abort recognition sessions.
+
+**Solution:** Implemented controlled start/stop lifecycle.
+
+---
+
+### Synchronizing AI Speech & Listening
+
+AI speaking while mic active caused conflicts.
+
+**Solution:** Explicit speech state machine.
+
+---
+
+### Candidate Control
+
+Auto-submission degraded experience.
+
+**Solution:** Manual submission design.
+
+---
+
+### Navigation Errors
+
+Returning from report page caused audio crashes.
+
+**Solution:** Cleanup hooks on component unmount.
+
+---
+
+# **9. What Makes This Solution Strong**
+
+* Real interview simulation
+* Human-centric evaluation focus
+* Voice-native interaction
+* Behavioural assessment layer
+* Professional candidate UX
+* Scalable screening architecture
+
+This is not a demo chatbot — it functions as an  **operational hiring tool prototype** .
+
+---
+
+# **10. Future Improvements**
+
+With more time, the following would be added:
+
+* Facial emotion detection scoring
+* Eye-contact tracking
+* Speech pace & pause analysis
+* Tutor personality profiling
+* Multi-question adaptive interviews
+* Dashboard for hiring managers
+* Candidate analytics database
+* Bias monitoring system
+* Multi-language support
+
+---
+
+# **11. Impact & Vision**
+
+The AI Tutor Screener demonstrates how AI can:
+
+* Reduce hiring costs
+* Increase screening scale
+* Improve evaluation consistency
+* Deliver fairer candidate assessments
+* Enhance first interaction with Cuemath
+
+The long-term vision is an **AI-assisted hiring pipeline** where human interviewers focus only on high-potential candidates.
+
+---
+
+# **12. Conclusion**
+
+This project successfully builds a deployed AI interviewer capable of conducting voice-based tutor screening aligned with Cuemath’s educational philosophy.
+
+It combines conversational AI, voice technology, behavioural evaluation, and thoughtful UX design to create a scalable hiring solution.
+
+The system reflects both **engineering execution** and  **product thinking** , demonstrating how AI can meaningfully augment real educational workflows.
+
+---
+
+If you want next, I can also generate:
+
+✅ **2–5 minute walkthrough script** (HIGHLY IMPORTANT for selection)
+
+✅ **Perfect README.md for GitHub**
+
+✅ **Recruiter-impressing submission email draft**
+
+✅ **Architecture diagram (interview-level polish)**
+
+✅ **What Cuemath interviewers secretly look for checklist**
+
+Just tell me.
+
+Create a github readme for this project
+
+Here is a **professional, recruiter-level GitHub README** specifically optimized to impress evaluators reviewing your Cuemath assignment.
+
+You can  **copy-paste this directly into `README.md`** .
+
 ---
 
 # 🎓 AI Tutor Screener
