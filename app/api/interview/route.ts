@@ -1,7 +1,31 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { verifyToken } from "@/lib/auth";
+
+
+
 
 export async function POST(req: Request) {
+
+  
   try {
+
+const cookieStore = await cookies();
+const token = cookieStore.get("token")?.value;
+
+if (!token) {
+  return Response.json({ error: "Unauthorized" }, { status: 401 });
+}
+
+const payload = verifyToken(token);
+
+if (!payload) {
+  return Response.json({ error: "Invalid token" }, { status: 401 });
+}
+
+const userId = payload.userId;
+
+
     const { userAnswer, history } = await req.json();
 
     const apiKey = process.env.GROQ_API_KEY;

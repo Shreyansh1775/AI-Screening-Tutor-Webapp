@@ -9,8 +9,8 @@ type Message = {
 };
 
 export default function InterviewPage() {
+  const startedRef = useRef(false);
   const MAX_QUESTIONS = 2;
-
   const [status, setStatus] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
   const [conversation, setConversation] = useState<Message[]>([
     {
@@ -71,12 +71,25 @@ export default function InterviewPage() {
   };
 
   // ─── on mount: speak first message then open mic ───
-  useEffect(() => {
-    const firstMessage = conversation[0]?.text;
-    if (firstMessage) {
-      speakThenListen(firstMessage);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+// keep refs in sync
+useEffect(() => {
+  conversationRef.current = conversation;
+}, [conversation]);
+
+// ✅ NEW intro effect here
+useEffect(() => {
+  if (startedRef.current) return;
+
+  startedRef.current = true;
+
+  const firstMessage = conversation[0]?.text;
+  if (firstMessage) {
+    setStatusSync("speaking");
+    speakText(firstMessage).then(() => {
+      setStatusSync("idle");
+    });
+  }
+}, []);
 
   // ─── update display while mic is open ───
   useEffect(() => {

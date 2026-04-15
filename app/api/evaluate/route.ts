@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import Report from "@/models/Reports";
+import { connectDB } from "@/lib/mongodb";
 
 export async function POST(req: Request) {
   try {
@@ -91,6 +93,14 @@ Return ONLY valid JSON in this format:
       }
     );
 
+    await connectDB();
+
+await Report.create({
+  userId,
+  score,
+  feedback,
+  transcript,
+});
     const data = await response.json();
 
 let resultText = data?.choices?.[0]?.message?.content || "{}";
