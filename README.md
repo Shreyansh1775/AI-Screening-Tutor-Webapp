@@ -725,6 +725,6 @@ This project demonstrates both **software engineering execution** and  **product
 
 ## 👤 Author
 
-**RK**
+**Shreyansh Kumar Jha**
 
 B.Tech Engineering Graduate
