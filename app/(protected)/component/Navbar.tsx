@@ -27,7 +27,7 @@ const handleLogout = async () => {
       <h1 className="text-lg font-semibold">AI Interview Platform</h1>
 
       <div className="flex items-center space-x-6">
-        <span onClick={() => router.push("/home")} className={linkClass("/")}>
+        <span onClick={() => router.push("/")} className={linkClass("/")}>
           Home
         </span>
 
