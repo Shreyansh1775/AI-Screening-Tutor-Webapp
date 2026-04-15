@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import PageTransition from "@/components/PageTransition";
-
+import PageTransition from "@/app/component/PageTransition";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
