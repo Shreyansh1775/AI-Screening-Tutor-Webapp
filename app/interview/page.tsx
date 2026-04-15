@@ -71,23 +71,17 @@ export default function InterviewPage() {
   };
 
   // ─── on mount: speak first message then open mic ───
-// keep refs in sync
-useEffect(() => {
-  conversationRef.current = conversation;
-}, [conversation]);
 
-// ✅ NEW intro effect here
+// ✅ FIXED intro effect (speaks then opens mic)
 useEffect(() => {
   if (startedRef.current) return;
 
   startedRef.current = true;
 
   const firstMessage = conversation[0]?.text;
+
   if (firstMessage) {
-    setStatusSync("speaking");
-    speakText(firstMessage).then(() => {
-      setStatusSync("idle");
-    });
+    speakThenListen(firstMessage);
   }
 }, []);
 

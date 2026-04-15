@@ -1,11 +1,27 @@
 import { NextResponse } from "next/server";
 import Report from "@/models/Reports";
 import { connectDB } from "@/lib/mongodb";
+import { cookies } from "next/headers";
+import { verifyToken } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+if (!token) {
+  return Response.json({ error: "Unauthorized" }, { status: 401 });
+}
+
+    const payload = verifyToken(token);
+    const userId = payload?.userId;
+
     const { transcript } = await req.json();
 
+    // Dummy evaluation (replace later with Groq result)
+    const score = 80;
+    const feedback = "Good communication and clarity.";
+        
     const apiKey = process.env.GROQ_API_KEY;
 
     const formattedTranscript = transcript
@@ -95,12 +111,6 @@ Return ONLY valid JSON in this format:
 
     await connectDB();
 
-await Report.create({
-  userId,
-  score,
-  feedback,
-  transcript,
-});
     const data = await response.json();
 
 let resultText = data?.choices?.[0]?.message?.content || "{}";
