@@ -13,17 +13,21 @@ export default function Navbar() {
         : "text-gray-600 hover:text-indigo-600"
     }`;
 
-  const handleLogout = async () => {
-    await fetch("/api/auth/logout");
-    router.push("/login");
-  };
+const handleLogout = async () => {
+  await fetch("/api/auth/logout", {
+    method: "POST",
+  });
+
+  router.push("/login");
+  router.refresh(); // ensures middleware re-check
+};
 
   return (
     <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
       <h1 className="text-lg font-semibold">AI Interview Platform</h1>
 
       <div className="flex items-center space-x-6">
-        <span onClick={() => router.push("/")} className={linkClass("/")}>
+        <span onClick={() => router.push("/home")} className={linkClass("/")}>
           Home
         </span>
 
