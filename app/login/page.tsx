@@ -11,12 +11,14 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ✅ Validation
+  // 👁 password visibility toggle
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Validation
   const isValidEmail = /\S+@\S+\.\S+/.test(email);
   const isFormValid = isValidEmail && password.trim().length > 0;
 
   const handleLogin = async () => {
-    // ✅ Prevent unnecessary API call
     if (loading || !isFormValid) return;
 
     setLoading(true);
@@ -42,7 +44,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex ">
+    <div className="min-h-screen flex">
 
       {/* LEFT PANEL */}
       <div className="hidden md:flex w-[65%] relative">
@@ -92,7 +94,6 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            {/* Inline validation */}
             {email && !isValidEmail && (
               <p className="text-xs text-red-500">
                 Enter a valid email address
@@ -100,22 +101,30 @@ export default function LoginPage() {
             )}
           </div>
 
-          {/* Password */}
+          {/* Password WITH EYE ICON */}
           <div className="space-y-1">
             <label className="text-sm font-medium text-gray-700">
               Password
             </label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className={`w-full px-5 py-3 border rounded-none focus:outline-none focus:ring-2 transition ${
-                password === "" && email
-                  ? "border-gray-300 focus:ring-black"
-                  : "focus:ring-black"
-              }`}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="w-full px-5 py-3 pr-10 border rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              {/* Eye Button */}
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+              >
+                {showPassword ? "🙈" : "👁"}
+              </button>
+            </div>
           </div>
 
           {/* Button */}
@@ -151,6 +160,7 @@ export default function LoginPage() {
               Sign up
             </span>
           </p>
+
         </div>
       </div>
     </div>

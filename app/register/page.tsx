@@ -9,11 +9,16 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // ✅ Validation
+  // 👁 visibility toggles
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Validation
   const isValidEmail = /\S+@\S+\.\S+/.test(email);
   const isPasswordValid = password.trim().length > 0;
   const isPasswordMatch = password === confirmPassword;
@@ -22,7 +27,6 @@ export default function RegisterPage() {
     isValidEmail && isPasswordValid && isPasswordMatch;
 
   const handleRegister = async () => {
-    // ✅ Prevent unnecessary API call
     if (loading || !isFormValid) return;
 
     setLoading(true);
@@ -39,7 +43,6 @@ export default function RegisterPage() {
       if (res.ok) {
         setSuccess("Account created successfully 🎉");
 
-        // slight delay for UX before redirect
         setTimeout(() => {
           router.push("/login");
         }, 1000);
@@ -107,29 +110,48 @@ export default function RegisterPage() {
           </div>
 
           {/* Password */}
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-5 pr-4 py-3 border rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
+              className="w-full pl-5 pr-10 py-3 border rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
             />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+            >
+              {showPassword ? "🙈" : "👁"}
+            </button>
           </div>
 
           {/* Confirm Password */}
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className={`w-full pl-5 pr-4 py-3 border rounded-none focus:outline-none focus:ring-2 transition ${
+              className={`w-full pl-5 pr-10 py-3 border rounded-none focus:outline-none focus:ring-2 transition ${
                 confirmPassword && !isPasswordMatch
                   ? "border-red-400 focus:ring-red-400"
                   : "focus:ring-black"
               }`}
             />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowConfirmPassword((prev) => !prev)
+              }
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+            >
+              {showConfirmPassword ? "🙈" : "👁"}
+            </button>
+
             {confirmPassword && !isPasswordMatch && (
               <p className="text-xs text-red-500 mt-1">
                 Passwords do not match
@@ -170,6 +192,7 @@ export default function RegisterPage() {
               Go to login page here
             </span>
           </p>
+
         </div>
       </div>
     </div>
