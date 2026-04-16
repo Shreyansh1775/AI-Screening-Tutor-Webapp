@@ -3,6 +3,7 @@
 import { startListening, stopListening, getCurrentTranscript } from "@/lib/speech";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import CameraPanel from "../component/CameraPanel";
 
 type Message = {
   role: "ai" | "user";
@@ -238,9 +239,17 @@ export default function InterviewPage() {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="w-2/5 p-6 flex flex-col justify-between">
+        <div className="w-2/5 p-4 flex flex-col gap-4 overflow-y-auto">
 
-          <div className="bg-white/80 backdrop-blur-md rounded-xl p-5 shadow space-y-4">
+        <div className="space-y-4">
+
+              {/* CAMERA */}
+              <CameraPanel />
+
+            {/* CONTROL PANEL */}
+            <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow space-y-3">
+            </div>
+
 
             {/* Status */}
             <div className="flex justify-between items-center">
