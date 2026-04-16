@@ -194,18 +194,28 @@ const handleStartInterview = async () => {
   };
 
 
-  if (!started) {
+  if (!started) if (!started) {
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
-      {/* Intro Screen */}
-      <div className="flex flex-1 items-center justify-center">
+    <div className="min-h-screen flex flex-col relative">
+
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/home-bg.jpg')" }}
+      ></div>
+
+      {/* White Blur Overlay */}
+      <div className="absolute inset-0 bg-white/25 backdrop-blur-sm"></div>
+
+      {/* Intro Content */}
+      <div className="flex flex-1 items-center justify-center relative z-10 px-4">
         <div className="max-w-xl text-center space-y-6">
 
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-3xl font-bold text-[#0E73F6]">
             AI Tutor Interview
           </h2>
 
-          <p className="text-gray-600">
+          <p className="text-[#333333]">
             This AI interview evaluates your teaching skills, communication,
             confidence, and response quality through real-time interaction.
             Click below when you are ready to begin.
