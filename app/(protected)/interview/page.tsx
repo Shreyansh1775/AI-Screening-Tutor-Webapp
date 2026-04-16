@@ -209,16 +209,16 @@ export default function InterviewPage() {
 
   // ---------- MAIN ----------
   return (
-    <div className="h-screen relative flex flex-col">
+    <div className="h-screen overflow-hidden relative flex flex-col">
 
       {/* Background */}
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/home-bg.jpg')" }}></div>
       <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
 
-      <div className="flex flex-1 overflow-hidden relative z-10">
+      <div className="flex flex-1 min-h-0 overflow-hidden relative z-10">
 
         {/* LEFT CHAT */}
-        <div className="w-3/5 p-6 overflow-y-auto">
+        <div className="w-3/5 p-6 overflow-y-auto min-h-0">
           <div className="space-y-5">
             {conversation.map((msg, index) => (
               <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -238,15 +238,18 @@ export default function InterviewPage() {
         </div>
 
         {/* RIGHT PANEL */}
-<div className="w-2/5 p-4">
-  <div className="h-full grid grid-cols-2 gap-4 items-start">
+{/* RIGHT PANEL */}
+<div className="w-2/5 p-4 h-full overflow-hidden min-h-0">
 
-    {/* LEFT COLUMN - CONTROLS */}
-    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow flex flex-col justify-between h-full">
+  <div className="h-full grid grid-cols-2 gap-4">
 
-      <div className="space-y-3">
+    {/* ================= LEFT COLUMN (CONTROLS) ================= */}
+    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow flex flex-col">
 
-        {/* Status */}
+      {/* Top Section */}
+      <div className="space-y-3 flex-1 overflow-hidden">
+
+        {/* Status Header */}
         <div className="flex justify-between items-center">
           <p className="text-sm text-gray-500">Status</p>
           <button
@@ -265,11 +268,11 @@ export default function InterviewPage() {
         </p>
 
         {/* Visualizer */}
-        <div className="flex justify-center h-20 items-end space-x-1">
+        <div className="flex justify-center h-16 items-end space-x-1">
           {[8, 14, 6, 10, 4].map((h, i) => (
             <div
               key={i}
-              style={{ height: status === "listening" ? `${h * 2.5}px` : "6px" }}
+              style={{ height: status === "listening" ? `${h * 2}px` : "6px" }}
               className={`w-2 bg-indigo-500 rounded ${
                 status === "listening" ? "animate-pulse" : "opacity-30"
               }`}
@@ -282,8 +285,8 @@ export default function InterviewPage() {
           Question {questionCountRef.current} / {MAX_QUESTIONS}
         </p>
 
-        {/* Transcript */}
-        <div className="p-3 bg-gray-50 rounded text-sm min-h-[80px]">
+        {/* Transcript (fills available space but never pushes layout) */}
+        <div className="p-3 bg-gray-50 rounded text-sm flex-1 overflow-hidden min-h-[120px]">
           {displayInput || (
             <span className="text-gray-400 italic">
               {status === "listening"
@@ -296,28 +299,32 @@ export default function InterviewPage() {
             </span>
           )}
         </div>
+
       </div>
 
-      {/* Submit Button */}
-      <button
-        onClick={handleSubmit}
-        disabled={status !== "listening"}
-        className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-40 mt-3"
-      >
-        {status === "listening"
-          ? "Submit Answer"
-          : status === "speaking"
-          ? "AI Speaking..."
-          : status === "thinking"
-          ? "Processing..."
-          : "Waiting..."}
-      </button>
+      {/* Submit Button (ALWAYS FIXED AT BOTTOM) */}
+      <div className="pt-3">
+        <button
+          onClick={handleSubmit}
+          disabled={status !== "listening"}
+          className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-40"
+        >
+          {status === "listening"
+            ? "Submit Answer"
+            : status === "speaking"
+            ? "AI Speaking..."
+            : status === "thinking"
+            ? "Processing..."
+            : "Waiting..."}
+        </button>
+      </div>
+
     </div>
 
-    {/* RIGHT COLUMN - CAMERA PANEL */}
-    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow flex flex-col h-full">
+    {/* ================= RIGHT COLUMN (CAMERA) ================= */}
+    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow flex flex-col">
 
-      {/* Camera */}
+      {/* Square Camera Frame */}
       <div className="w-full aspect-square">
         <CameraPanel />
       </div>
@@ -325,7 +332,7 @@ export default function InterviewPage() {
       {/* Divider */}
       <div className="border-t my-3"></div>
 
-      {/* Placeholder AI Insights */}
+      {/* AI Insight Placeholder */}
       <div className="text-sm space-y-2 text-gray-700">
         <p><span className="font-medium">Emotion Detected:</span> ?</p>
         <p><span className="font-medium">Confidence Level:</span> ?</p>
