@@ -11,8 +11,13 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // ✅ Validation
+  const isValidEmail = /\S+@\S+\.\S+/.test(email);
+  const isFormValid = isValidEmail && password.trim().length > 0;
+
   const handleLogin = async () => {
-    if (loading) return;
+    // ✅ Prevent unnecessary API call
+    if (loading || !isFormValid) return;
 
     setLoading(true);
     setError("");
@@ -39,17 +44,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex ">
 
-      {/* LEFT PANEL (IMAGE) */}
+      {/* LEFT PANEL */}
       <div className="hidden md:flex w-[65%] relative">
         <img
           src="/login-ai.jpg"
           alt="AI Interview"
           className="w-full h-full object-cover"
         />
-
       </div>
 
-      {/* RIGHT PANEL (LOGIN) */}
+      {/* RIGHT PANEL */}
       <div className="flex w-full md:w-[35%] items-center justify-center bg-gray-50 px-6">
         
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
@@ -79,9 +83,21 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="Enter your Email"
-              className="w-full px-5 pl-5 py-3 border rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
+              className={`w-full px-5 py-3 border rounded-none focus:outline-none focus:ring-2 transition ${
+                email && !isValidEmail
+                  ? "border-red-400 focus:ring-red-400"
+                  : "focus:ring-black"
+              }`}
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+
+            {/* Inline validation */}
+            {email && !isValidEmail && (
+              <p className="text-xs text-red-500">
+                Enter a valid email address
+              </p>
+            )}
           </div>
 
           {/* Password */}
@@ -92,7 +108,12 @@ export default function LoginPage() {
             <input
               type="password"
               placeholder="Enter your password"
-              className="w-full px-5 pl-5 py-3 border rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
+              className={`w-full px-5 py-3 border rounded-none focus:outline-none focus:ring-2 transition ${
+                password === "" && email
+                  ? "border-gray-300 focus:ring-black"
+                  : "focus:ring-black"
+              }`}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -100,10 +121,12 @@ export default function LoginPage() {
           {/* Button */}
           <button
             onClick={handleLogin}
-            disabled={loading}
+            disabled={loading || !isFormValid}
             className={`w-full py-2 px-4 rounded-lg text-white font-medium transition-all duration-300 flex items-center justify-center
             ${
               loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : !isFormValid
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-black hover:bg-gray-700 active:scale-[0.98]"
             }`}
@@ -123,7 +146,10 @@ export default function LoginPage() {
             className="text-center text-sm text-gray-500 cursor-pointer hover:text-black transition"
             onClick={() => router.push("/register")}
           >
-            Don’t have an account? <span className="font-medium text-blue-600 hover:underline">Sign up</span>
+            Don’t have an account?{" "}
+            <span className="font-medium text-blue-600 hover:underline">
+              Sign up
+            </span>
           </p>
         </div>
       </div>
