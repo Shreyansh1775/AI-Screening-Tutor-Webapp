@@ -1,6 +1,11 @@
 import "./globals.css";
 import ClientLayout from "@/app/(protected)/component/ClientLayout";
 
+export const metadata = {
+  title: "AI Interviewer",
+  description: "AI-powered interview and evaluation platform",
+};
+
 export default function RootLayout({
   children,
 }: {
