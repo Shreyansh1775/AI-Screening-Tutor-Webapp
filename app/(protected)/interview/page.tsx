@@ -17,12 +17,12 @@ export default function InterviewPage() {
 
   const [status, setStatus] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
 
-  const [conversation, setConversation] = useState<Message[]>([
+  const [conversation, setConversation] = useState<Message[]>(([
     {
       role: "ai",
       text: "Hello! I'm your AI interviewer for today. I'll be assessing your communication and teaching approach. Let's begin — could you please introduce yourself?",
     },
-  ]);
+  ]));
 
   const router = useRouter();
   const [displayInput, setDisplayInput] = useState("");
@@ -110,9 +110,10 @@ export default function InterviewPage() {
       const aiText = data.aiResponse || "Can you tell me more about your teaching approach?";
 
       const withAI: Message[] = [
-  ...updatedConversation,
-  { role: "ai", text: aiText as string }
-];
+        ...updatedConversation,
+        { role: "ai", text: aiText as string }
+      ];
+
       setConversation(withAI);
       conversationRef.current = withAI;
       questionCountRef.current += 1;
@@ -157,9 +158,10 @@ export default function InterviewPage() {
     }
 
     const updatedConversation: Message[] = [
-  ...conversationRef.current,
-  { role: "user", text: text as string }
-];
+      ...conversationRef.current,
+      { role: "user", text: text as string }
+    ];
+
     setConversation(updatedConversation);
     conversationRef.current = updatedConversation;
 
@@ -177,11 +179,10 @@ export default function InterviewPage() {
     handleEvaluation(conversationRef.current);
   };
 
-  // ---------------- INTRO SCREEN ----------------
+  // ---------- INTRO ----------
   if (!started) {
     return (
       <div className="min-h-screen flex flex-col relative">
-
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/home-bg.jpg')" }}></div>
         <div className="absolute inset-0 bg-white/25 backdrop-blur-sm"></div>
 
@@ -206,7 +207,7 @@ export default function InterviewPage() {
     );
   }
 
-  // ---------------- MAIN INTERVIEW ----------------
+  // ---------- MAIN ----------
   return (
     <div className="h-screen relative flex flex-col">
 
@@ -221,13 +222,11 @@ export default function InterviewPage() {
           <div className="space-y-5">
             {conversation.map((msg, index) => (
               <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[75%] px-5 py-3 rounded-2xl shadow ${
-                    msg.role === "ai"
-                      ? "bg-white/80 backdrop-blur text-gray-800"
-                      : "bg-indigo-600 text-white"
-                  }`}
-                >
+                <div className={`max-w-[75%] px-5 py-3 rounded-2xl shadow ${
+                  msg.role === "ai"
+                    ? "bg-white/80 backdrop-blur text-gray-800"
+                    : "bg-indigo-600 text-white"
+                }`}>
                   <p className="text-xs mb-1 opacity-60">
                     {msg.role === "ai" ? "Interviewer" : "You"}
                   </p>
@@ -239,67 +238,105 @@ export default function InterviewPage() {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="w-2/5 p-4 flex flex-col gap-4 overflow-y-auto">
+<div className="w-2/5 p-4">
+  <div className="h-full grid grid-cols-2 gap-4 items-start">
 
-        <div className="space-y-4">
+    {/* LEFT COLUMN - CONTROLS */}
+    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow flex flex-col justify-between h-full">
 
-              {/* CAMERA */}
-              <CameraPanel />
+      <div className="space-y-3">
 
-            {/* CONTROL PANEL */}
-            <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow space-y-3">
-            </div>
-
-
-            {/* Status */}
-            <div className="flex justify-between items-center">
-              <p className="text-sm text-gray-500">Status</p>
-              <button onClick={handleEndInterview} className="text-red-500 text-sm hover:underline">
-                End
-              </button>
-            </div>
-
-            <p className="text-lg font-semibold">
-              {status === "listening" && "🎤 Listening"}
-              {status === "thinking" && "⏳ Thinking"}
-              {status === "speaking" && "🔊 Speaking"}
-              {status === "idle" && "Ready"}
-            </p>
-
-            {/* Visualizer */}
-            <div className="flex justify-center h-24 items-end space-x-1">
-              {[8, 14, 6, 10, 4].map((h, i) => (
-                <div
-                  key={i}
-                  style={{ height: status === "listening" ? `${h * 3}px` : "6px" }}
-                  className={`w-2 bg-indigo-500 rounded ${
-                    status === "listening" ? "animate-pulse" : "opacity-30"
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Progress */}
-            <p className="text-sm text-gray-600">
-              Question {questionCountRef.current} / {MAX_QUESTIONS}
-            </p>
-
-            {/* Transcript */}
-            <div className="p-3 bg-gray-50 rounded text-sm min-h-[60px]">
-              {displayInput || <span className="text-gray-400">Waiting...</span>}
-            </div>
-
-            {/* Button */}
-            <button
-              onClick={handleSubmit}
-              disabled={status !== "listening"}
-              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-40"
-            >
-              Submit Answer
-            </button>
-          </div>
-
+        {/* Status */}
+        <div className="flex justify-between items-center">
+          <p className="text-sm text-gray-500">Status</p>
+          <button
+            onClick={handleEndInterview}
+            className="text-red-500 text-sm hover:underline"
+          >
+            End
+          </button>
         </div>
+
+        <p className="text-lg font-semibold">
+          {status === "listening" && "🎤 Listening"}
+          {status === "thinking" && "⏳ Thinking"}
+          {status === "speaking" && "🔊 Speaking"}
+          {status === "idle" && "Ready"}
+        </p>
+
+        {/* Visualizer */}
+        <div className="flex justify-center h-20 items-end space-x-1">
+          {[8, 14, 6, 10, 4].map((h, i) => (
+            <div
+              key={i}
+              style={{ height: status === "listening" ? `${h * 2.5}px` : "6px" }}
+              className={`w-2 bg-indigo-500 rounded ${
+                status === "listening" ? "animate-pulse" : "opacity-30"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Progress */}
+        <p className="text-sm text-gray-600">
+          Question {questionCountRef.current} / {MAX_QUESTIONS}
+        </p>
+
+        {/* Transcript */}
+        <div className="p-3 bg-gray-50 rounded text-sm min-h-[80px]">
+          {displayInput || (
+            <span className="text-gray-400 italic">
+              {status === "listening"
+                ? "Speak now..."
+                : status === "speaking"
+                ? "AI speaking..."
+                : status === "thinking"
+                ? "Processing..."
+                : "Waiting..."}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        onClick={handleSubmit}
+        disabled={status !== "listening"}
+        className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-40 mt-3"
+      >
+        {status === "listening"
+          ? "Submit Answer"
+          : status === "speaking"
+          ? "AI Speaking..."
+          : status === "thinking"
+          ? "Processing..."
+          : "Waiting..."}
+      </button>
+    </div>
+
+    {/* RIGHT COLUMN - CAMERA PANEL */}
+    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow flex flex-col h-full">
+
+      {/* Camera */}
+      <div className="w-full aspect-square">
+        <CameraPanel />
+      </div>
+
+      {/* Divider */}
+      <div className="border-t my-3"></div>
+
+      {/* Placeholder AI Insights */}
+      <div className="text-sm space-y-2 text-gray-700">
+        <p><span className="font-medium">Emotion Detected:</span> ?</p>
+        <p><span className="font-medium">Confidence Level:</span> ?</p>
+        <p><span className="font-medium">Eye Contact:</span> ?</p>
+        <p><span className="font-medium">Engagement:</span> ?</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
       </div>
     </div>
   );
