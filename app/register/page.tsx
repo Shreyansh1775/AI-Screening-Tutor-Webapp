@@ -36,33 +36,46 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-50">
-      <div className="p-8 border rounded-xl shadow-md bg-white w-[350px]">
-        <h1 className="text-2xl font-semibold mb-6 text-center">
+    <div className="min-h-screen flex">
+      {/* LEFT PANEL (IMAGE) */}
+        <div className="hidden md:flex w-[65%] relative">
+          <img
+            src="/login-ai.jpg"
+            alt="AI Interview"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+
+      {/* RIGHT PANEL ( REGISTER CARD ) */}
+      <div className="flex w-full md:w-[35%] items-center justify-center bg-gray-50 px-6">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+        
+        <h1 className="text-3xl font-bold text-center text-gray-800">
           Create Account
         </h1>
 
         <input
           placeholder="Email"
-          className="border p-2 w-full mb-3 rounded"
+          className="w-full pl-5 pr-4 py-3 border border-gray-700 rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="border p-2 w-full mb-4 rounded"
+          className="w-full pl-5 pr-4 py-3 border border-gray-700 rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
           onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
           onClick={handleRegister}
           disabled={loading}
-          className={`w-full py-2 rounded text-white transition-all duration-300
+          className={`w-full py-2 px-4 rounded-lg text-white font-medium transition-all duration-150 flex items-center justify-center
           ${
             loading
               ? "bg-gray-500 cursor-not-allowed"
-              : "bg-black hover:bg-gray-800"
+              : "bg-black hover:bg-gray-700 active:scale-[0.98]"
           }`}
         >
           {loading ? (
@@ -77,17 +90,18 @@ export default function RegisterPage() {
 
         {/* NEW SAFETY LINK */}
         <p
-          className="mt-5 text-center text-sm text-gray-600"
+          className="mt-5 text-center text-sm text-gray-500"
         >
           Already registered?{" "}
           <span
             onClick={() => router.push("/login")}
-            className="text-blue-500 cursor-pointer hover:underline"
+            className="font-medium text-blue-600 cursor-pointer hover:underline"
           >
             Go to login page here
           </span>
         </p>
       </div>
+    </div>
     </div>
   );
 }

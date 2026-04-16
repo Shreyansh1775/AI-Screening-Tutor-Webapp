@@ -105,7 +105,7 @@ export default function LoginPage() {
             ${
               loading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-black hover:bg-gray-800"
+                : "bg-black hover:bg-gray-700 active:scale-[0.98]"
             }`}
           >
             {loading ? (
