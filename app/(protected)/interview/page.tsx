@@ -334,10 +334,11 @@ export default function InterviewPage() {
 
       {/* AI Insight Placeholder */}
       <div className="text-sm space-y-2 text-gray-700">
-        <p><span className="font-medium">Emotion Detected:</span> ?</p>
-        <p><span className="font-medium">Confidence Level:</span> ?</p>
-        <p><span className="font-medium">Eye Contact:</span> ?</p>
-        <p><span className="font-medium">Engagement:</span> ?</p>
+        <p><span className="font-medium">Emotion Detected:</span>Neutral</p>
+        <p><span className="font-medium">Confidence Level:</span> Balanced</p>
+        <p><span className="font-medium">Eye Contact:</span> Natural Gaze</p>
+        <p><span className="font-medium">Engagement:</span> steady</p>
+        <p><span className="font-medium">Note:</span> The above parameters are under developing phase, therefore these are static showing the future scope here.</p>
       </div>
 
     </div>
