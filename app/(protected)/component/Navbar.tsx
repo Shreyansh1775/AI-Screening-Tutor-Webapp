@@ -7,12 +7,12 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const linkClass = (path: string) =>
-    `cursor-pointer ${
+    `px-3 py-1.5 rounded-md cursor-pointer transition ${
       pathname === path
-        ? "text-indigo-600 font-semibold"
-        : "text-gray-600 hover:text-indigo-600"
+        ? "bg-black text-white font-medium"
+        : "text-gray-600 hover:text-black"
     }`;
-
+    
 const handleLogout = async () => {
   await fetch("/api/auth/logout", {
     method: "POST",
@@ -23,10 +23,10 @@ const handleLogout = async () => {
 };
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
-      <h1 className="text-lg font-semibold">AI Interview Platform</h1>
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-6 py-4 border-b bg-white gap-3">
+      <h1 className="text-lg font-semibold">Shreyansh's Interv AI</h1>
 
-      <div className="flex items-center space-x-6">
+      <div className="flex flex-wrap items-center gap-3 md:gap-6">
         <span onClick={() => router.push("/")} className={linkClass("/")}>
           Home
         </span>
@@ -54,7 +54,7 @@ const handleLogout = async () => {
 
         <button
           onClick={handleLogout}
-          className="text-red-600 hover:underline"
+          className="px-3 py-1.5 border border-red-500 text-red-600 rounded-md hover:bg-red-50 transition"
         >
           Logout
         </button>
