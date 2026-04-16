@@ -175,7 +175,7 @@ An AI-powered **real-time interview simulation platform** that evaluates candida
 
 ## 👨‍💻 Author
 
-**Rish**
+**Shreyansh Kumar Jha**
 
 AI Interview Screener Project
 
