@@ -3,6 +3,7 @@
 import { startListening, stopListening, getCurrentTranscript } from "@/lib/speech";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+
 type Message = {
   role: "ai" | "user";
   text: string;
@@ -12,7 +13,9 @@ export default function InterviewPage() {
   const [started, setStarted] = useState(false);
   const startedRef = useRef(false);
   const MAX_QUESTIONS = 2;
+
   const [status, setStatus] = useState<"idle" | "listening" | "thinking" | "speaking">("idle");
+
   const [conversation, setConversation] = useState<Message[]>([
     {
       role: "ai",
@@ -21,12 +24,11 @@ export default function InterviewPage() {
   ]);
 
   const router = useRouter();
-  const [displayInput, setDisplayInput] = useState(""); // only for display
+  const [displayInput, setDisplayInput] = useState("");
   const conversationRef = useRef<Message[]>([]);
   const questionCountRef = useRef(0);
   const statusRef = useRef<string>("idle");
 
-  // keep refs in sync
   useEffect(() => {
     conversationRef.current = conversation;
   }, [conversation]);
@@ -36,55 +38,45 @@ export default function InterviewPage() {
     setStatus(s);
   };
 
-  // ─── speak text, returns promise that resolves when done ───
   const speakText = (text: string): Promise<void> => {
     return new Promise((resolve) => {
       window.speechSynthesis.cancel();
-
-      // small delay after cancel to avoid browser glitch
       setTimeout(() => {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 0.95;
         utterance.onend = () => resolve();
-        utterance.onerror = () => resolve(); // resolve even on error so flow continues
+        utterance.onerror = () => resolve();
         window.speechSynthesis.speak(utterance);
       }, 150);
     });
   };
 
-  // ─── open mic ───
   const openMic = () => {
     setDisplayInput("");
     setStatusSync("listening");
 
     startListening((text: string) => {
-      // fires when stopListening() is called
       setDisplayInput(text);
       setStatusSync("idle");
     });
   };
 
-  // ─── speak then open mic ───
   const speakThenListen = async (text: string) => {
     setStatusSync("speaking");
     await speakText(text);
     openMic();
   };
 
-  // ─── on mount: speak first message then open mic ───
-const handleStartInterview = async () => {
-  if (startedRef.current) return;
+  const handleStartInterview = async () => {
+    if (startedRef.current) return;
 
-  startedRef.current = true;
-  setStarted(true);
+    startedRef.current = true;
+    setStarted(true);
 
-  const firstMessage = conversation[0]?.text;
+    const firstMessage = conversation[0]?.text;
+    if (firstMessage) await speakThenListen(firstMessage);
+  };
 
-  if (firstMessage) {
-    await speakThenListen(firstMessage);
-  }
-};
-  // ─── update display while mic is open ───
   useEffect(() => {
     if (status !== "listening") return;
 
@@ -97,14 +89,12 @@ const handleStartInterview = async () => {
   }, [status]);
 
   useEffect(() => {
-  return () => {
-    // cleanup when leaving page
-    window.speechSynthesis.cancel();
-    stopListening();
-  };
-}, []);
+    return () => {
+      window.speechSynthesis.cancel();
+      stopListening();
+    };
+  }, []);
 
-  // ─── AI response ───
   const handleAIResponse = async (userText: string, updatedConversation: Message[]) => {
     setStatusSync("thinking");
 
@@ -112,28 +102,27 @@ const handleStartInterview = async () => {
       const res = await fetch("/api/interview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userAnswer: userText,
-          history: updatedConversation,
-        }),
+        body: JSON.stringify({ userAnswer: userText, history: updatedConversation }),
       });
 
       const data = await res.json();
       const aiText = data.aiResponse || "Can you tell me more about your teaching approach?";
 
-      const withAI: Message[] = [...updatedConversation, { role: "ai", text: aiText }];
+      const withAI: Message[] = [
+  ...updatedConversation,
+  { role: "ai", text: aiText as string }
+];
       setConversation(withAI);
       conversationRef.current = withAI;
       questionCountRef.current += 1;
 
       await speakThenListen(aiText);
     } catch (error) {
-      console.error("Frontend Error:", error);
+      console.error(error);
       setStatusSync("idle");
     }
   };
 
-  // ─── evaluation ───
   const handleEvaluation = async (finalConversation: Message[]) => {
     setStatusSync("thinking");
     window.speechSynthesis.cancel();
@@ -150,31 +139,26 @@ const handleStartInterview = async () => {
       localStorage.setItem("evaluation", JSON.stringify(data));
       router.push("/report");
     } catch (error) {
-      console.error("Evaluation error:", error);
+      console.error(error);
       setStatusSync("idle");
     }
   };
 
-  // ─── submit ───
   const handleSubmit = () => {
     if (statusRef.current !== "listening") return;
 
-    // grab transcript directly from module-level var — always fresh
     stopListening();
     const text = displayInput.trim();
 
     if (!text) {
-      // nothing captured, reopen mic
       setTimeout(() => openMic(), 200);
       return;
     }
 
-    setDisplayInput(text);
-
     const updatedConversation: Message[] = [
-      ...conversationRef.current,
-      { role: "user", text },
-    ];
+  ...conversationRef.current,
+  { role: "user", text: text as string }
+];
     setConversation(updatedConversation);
     conversationRef.current = updatedConversation;
 
@@ -186,79 +170,67 @@ const handleStartInterview = async () => {
     handleAIResponse(text, updatedConversation);
   };
 
-  // ─── end interview manually ───
   const handleEndInterview = () => {
     window.speechSynthesis.cancel();
     stopListening();
     handleEvaluation(conversationRef.current);
   };
 
+  // ---------------- INTRO SCREEN ----------------
+  if (!started) {
+    return (
+      <div className="min-h-screen flex flex-col relative">
 
-  if (!started) if (!started) {
-  return (
-    <div className="min-h-screen flex flex-col relative">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/home-bg.jpg')" }}></div>
+        <div className="absolute inset-0 bg-white/25 backdrop-blur-sm"></div>
 
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/home-bg.jpg')" }}
-      ></div>
+        <div className="flex flex-1 items-center justify-center relative z-10 px-4">
+          <div className="max-w-xl text-center space-y-6">
+            <h2 className="text-3xl font-bold text-[#0E73F6]">AI Tutor Interview</h2>
 
-      {/* White Blur Overlay */}
-      <div className="absolute inset-0 bg-white/25 backdrop-blur-sm"></div>
+            <p className="text-[#333333]">
+              This AI interview evaluates your teaching skills, communication,
+              confidence, and response quality through real-time interaction.
+            </p>
 
-      {/* Intro Content */}
-      <div className="flex flex-1 items-center justify-center relative z-10 px-4">
-        <div className="max-w-xl text-center space-y-6">
-
-          <h2 className="text-3xl font-bold text-[#0E73F6]">
-            AI Tutor Interview
-          </h2>
-
-          <p className="text-[#333333]">
-            This AI interview evaluates your teaching skills, communication,
-            confidence, and response quality through real-time interaction.
-            Click below when you are ready to begin.
-          </p>
-
-          <button
-            onClick={handleStartInterview}
-            className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700"
-          >
-            🚀 Start Interview
-          </button>
-
+            <button
+              onClick={handleStartInterview}
+              className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700"
+            >
+              🚀 Start Interview
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
+  // ---------------- MAIN INTERVIEW ----------------
   return (
-    
-    <div className="h-screen flex flex-col bg-gray-50">
-      {/* Top Bar */}
-      {/* Main Layout */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* LEFT: Conversation */}
+    <div className="h-screen relative flex flex-col">
+
+      {/* Background */}
+      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/home-bg.jpg')" }}></div>
+      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
+
+      <div className="flex flex-1 overflow-hidden relative z-10">
+
+        {/* LEFT CHAT */}
         <div className="w-3/5 p-6 overflow-y-auto">
-          <div className="space-y-6">
+          <div className="space-y-5">
             {conversation.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-              >
+              <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm ${
+                  className={`max-w-[75%] px-5 py-3 rounded-2xl shadow ${
                     msg.role === "ai"
-                      ? "bg-white border border-gray-200 text-gray-800"
+                      ? "bg-white/80 backdrop-blur text-gray-800"
                       : "bg-indigo-600 text-white"
                   }`}
                 >
-                  <p className="text-xs font-medium mb-1 opacity-60">
+                  <p className="text-xs mb-1 opacity-60">
                     {msg.role === "ai" ? "Interviewer" : "You"}
                   </p>
-                  <p>{msg.text}</p>
+                  <p className="text-sm leading-relaxed">{msg.text}</p>
                 </div>
               </div>
             ))}
@@ -266,89 +238,58 @@ const handleStartInterview = async () => {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="w-2/5 border-l bg-white p-6 flex flex-col justify-between">
-                          
-          {/* Status */}
-<div>
-  
-  {/* Top Row: Status + End Interview */}
-  <div className="flex justify-between items-center mb-2">
-    <h2 className="text-sm text-gray-500">Status</h2>
+        <div className="w-2/5 p-6 flex flex-col justify-between">
 
-    <button
-      onClick={handleEndInterview}
-      className="text-red-600 hover:underline"
-    >
-      End Interview
-    </button>
-  </div>
+          <div className="bg-white/80 backdrop-blur-md rounded-xl p-5 shadow space-y-4">
 
-  {/* Status Value */}
-  <p className="text-lg font-medium">
-    {status === "listening" && "🎤 Listening..."}
-    {status === "thinking" && "⏳ Processing..."}
-    {status === "speaking" && "🔊 AI Speaking..."}
-    {status === "idle" && "✅ Ready"}
-  </p>
+            {/* Status */}
+            <div className="flex justify-between items-center">
+              <p className="text-sm text-gray-500">Status</p>
+              <button onClick={handleEndInterview} className="text-red-500 text-sm hover:underline">
+                End
+              </button>
+            </div>
 
-</div>
+            <p className="text-lg font-semibold">
+              {status === "listening" && "🎤 Listening"}
+              {status === "thinking" && "⏳ Thinking"}
+              {status === "speaking" && "🔊 Speaking"}
+              {status === "idle" && "Ready"}
+            </p>
 
-        
-          {/* Voice Visualizer */}
-          <div className="flex items-center justify-center h-40">
-            <div className="flex space-x-1 items-end">
+            {/* Visualizer */}
+            <div className="flex justify-center h-24 items-end space-x-1">
               {[8, 14, 6, 10, 4].map((h, i) => (
                 <div
                   key={i}
-                  style={{ height: status === "listening" ? `${h * 4}px` : "8px" }}
-                  className={`w-2 bg-indigo-500 rounded transition-all duration-300 ${
+                  style={{ height: status === "listening" ? `${h * 3}px` : "6px" }}
+                  className={`w-2 bg-indigo-500 rounded ${
                     status === "listening" ? "animate-pulse" : "opacity-30"
                   }`}
                 />
               ))}
             </div>
-          </div>
 
-          {/* Bottom Controls */}
-          <div className="space-y-4">
             {/* Progress */}
-            <div>
-              <p className="text-sm text-gray-500">Progress</p>
-              <p className="font-medium">
-                Question {questionCountRef.current} of {MAX_QUESTIONS}
-              </p>
+            <p className="text-sm text-gray-600">
+              Question {questionCountRef.current} / {MAX_QUESTIONS}
+            </p>
+
+            {/* Transcript */}
+            <div className="p-3 bg-gray-50 rounded text-sm min-h-[60px]">
+              {displayInput || <span className="text-gray-400">Waiting...</span>}
             </div>
 
-            {/* Live transcript display */}
-            <div className="p-3 border rounded bg-gray-50 text-sm text-gray-700 min-h-[60px]">
-              {displayInput || (
-                <span className="text-gray-400 italic">
-                  {status === "listening"
-                    ? "Speak now — your words appear here..."
-                    : status === "speaking"
-                    ? "AI is speaking, please wait..."
-                    : status === "thinking"
-                    ? "Processing your answer..."
-                    : "—"}
-                </span>
-              )}
-            </div>
-
-            {/* Submit button */}
+            {/* Button */}
             <button
               onClick={handleSubmit}
               disabled={status !== "listening"}
-              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition disabled:opacity-40 disabled:cursor-not-allowed font-medium"
+              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-40"
             >
-              {status === "listening"
-                ? "✅ Done — Submit Answer"
-                : status === "speaking"
-                ? "🔊 AI is speaking..."
-                : status === "thinking"
-                ? "⏳ Processing..."
-                : "Waiting..."}
+              Submit Answer
             </button>
           </div>
+
         </div>
       </div>
     </div>
