@@ -14,18 +14,39 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // 👁 visibility toggles
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Validation
+  // ---------------- VALIDATION ----------------
   const isValidEmail = /\S+@\S+\.\S+/.test(email);
-  const isPasswordValid = password.trim().length > 0;
+
+  const hasMinLength = password.length >= 8;
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+  const strengthScore =
+    [hasMinLength, hasUpper, hasLower, hasNumber, hasSpecial].filter(Boolean)
+      .length;
+
+  const getStrengthLabel = () => {
+    if (password.length === 0) return "";
+    if (strengthScore <= 2) return "🔴 Weak password";
+    if (strengthScore === 3 || strengthScore === 4)
+      return "🟠 Medium strength";
+    return "🟢 Strong password";
+  };
+
+  const isPasswordStrong =
+    hasMinLength && hasUpper && hasLower && hasNumber && hasSpecial;
+
   const isPasswordMatch = password === confirmPassword;
 
   const isFormValid =
-    isValidEmail && isPasswordValid && isPasswordMatch;
+    isValidEmail && isPasswordStrong && isPasswordMatch;
 
+  // ---------------- REGISTER ----------------
   const handleRegister = async () => {
     if (loading || !isFormValid) return;
 
@@ -59,7 +80,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex">
 
-      {/* LEFT PANEL */}
+      {/* LEFT */}
       <div className="hidden md:flex w-[65%] relative">
         <img
           src="/login-ai.jpg"
@@ -68,29 +89,29 @@ export default function RegisterPage() {
         />
       </div>
 
-      {/* RIGHT PANEL */}
+      {/* RIGHT */}
       <div className="flex w-full md:w-[35%] items-center justify-center bg-gray-50 px-6">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-5">
-          
+
           <h1 className="text-3xl font-bold text-center text-gray-800">
             Create Account
           </h1>
 
-          {/* Error */}
+          {/* ERROR */}
           {error && (
             <div className="bg-red-100 text-red-600 text-sm p-2 rounded text-center">
               {error}
             </div>
           )}
 
-          {/* Success */}
+          {/* SUCCESS */}
           {success && (
             <div className="bg-green-100 text-green-600 text-sm p-2 rounded text-center">
               {success}
             </div>
           )}
 
-          {/* Email */}
+          {/* EMAIL */}
           <div>
             <input
               placeholder="Email"
@@ -109,7 +130,7 @@ export default function RegisterPage() {
             )}
           </div>
 
-          {/* Password */}
+          {/* PASSWORD */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -121,14 +142,21 @@ export default function RegisterPage() {
 
             <button
               type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+              onClick={() => setShowPassword((p) => !p)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
             >
               {showPassword ? "🙈" : "👁"}
             </button>
+
+            {/* STRENGTH INDICATOR */}
+            {password && (
+              <p className="text-xs mt-1 text-gray-600">
+                {getStrengthLabel()}
+              </p>
+            )}
           </div>
 
-          {/* Confirm Password */}
+          {/* CONFIRM PASSWORD */}
           <div className="relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -144,10 +172,8 @@ export default function RegisterPage() {
 
             <button
               type="button"
-              onClick={() =>
-                setShowConfirmPassword((prev) => !prev)
-              }
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+              onClick={() => setShowConfirmPassword((p) => !p)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
             >
               {showConfirmPassword ? "🙈" : "👁"}
             </button>
@@ -159,30 +185,23 @@ export default function RegisterPage() {
             )}
           </div>
 
-          {/* Button */}
+          {/* BUTTON */}
           <button
             onClick={handleRegister}
             disabled={loading || !isFormValid}
-            className={`w-full py-2 px-4 rounded-lg text-white font-medium transition-all duration-150 flex items-center justify-center
-            ${
-              loading
-                ? "bg-gray-500 cursor-not-allowed"
-                : !isFormValid
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-black hover:bg-gray-700 active:scale-[0.98]"
-            }`}
+            className={`w-full py-2 px-4 rounded-lg text-white font-medium flex items-center justify-center transition
+              ${
+                loading
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : !isFormValid
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-black hover:bg-gray-700 active:scale-[0.98]"
+              }`}
           >
-            {loading ? (
-              <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                Creating Account...
-              </span>
-            ) : (
-              "Register"
-            )}
+            {loading ? "Creating Account..." : "Register"}
           </button>
 
-          {/* Footer */}
+          {/* FOOTER */}
           <p className="text-center text-sm text-gray-500">
             Already registered?{" "}
             <span
