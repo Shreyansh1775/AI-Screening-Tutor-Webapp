@@ -9,11 +9,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
     if (loading) return;
 
     setLoading(true);
+    setError("");
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -25,61 +27,105 @@ export default function LoginPage() {
       if (res.ok) {
         router.push("/home");
       } else {
-        alert("Invalid login");
+        setError("Invalid email or password");
         setLoading(false);
       }
     } catch (error) {
-      alert("Something went wrong");
+      setError("Something went wrong. Please try again.");
       setLoading(false);
     }
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-50">
-      <div className="p-8 border rounded-xl shadow-md bg-white w-[350px]">
-        <h1 className="text-2xl font-semibold mb-6 text-center">
-          AI Screening Tutor Login
-        </h1>
+    <div className="min-h-screen flex ">
 
-        <input
-          placeholder="Email"
-          className="border p-2 w-full mb-3 rounded"
-          onChange={(e) => setEmail(e.target.value)}
+      {/* LEFT PANEL (IMAGE) */}
+      <div className="hidden md:flex w-[65%] relative">
+        <img
+          src="/login-ai.jpg"
+          alt="AI Interview"
+          className="w-full h-full object-cover"
         />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2 w-full mb-4 rounded"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      </div>
 
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-          className={`w-full py-2 rounded text-white transition-all duration-300
-          ${
-            loading
-              ? "bg-gray-500 cursor-not-allowed"
-              : "bg-black hover:bg-gray-800"
-          }`}
-        >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-              Logging in...
-            </span>
-          ) : (
-            "Login"
+      {/* RIGHT PANEL (LOGIN) */}
+      <div className="flex w-full md:w-[35%] items-center justify-center bg-gray-50 px-6">
+        
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+          
+          {/* Heading */}
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-800">
+              Welcome Back
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">
+              Login to continue your interview journey
+            </p>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="bg-red-100 text-red-600 text-sm p-2 rounded-md text-center">
+              {error}
+            </div>
           )}
-        </button>
 
-        <p
-          className="mt-5 text-center cursor-pointer text-blue-500 hover:underline"
-          onClick={() => router.push("/register")}
-        >
-          Create Account
-        </p>
+          {/* Email */}
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your Email"
+              className="w-full px-5 pl-5 py-3 border rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          {/* Password */}
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="w-full px-5 pl-5 py-3 border rounded-none focus:outline-none focus:ring-2 focus:ring-black transition"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          {/* Button */}
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            className={`w-full py-2 px-4 rounded-lg text-white font-medium transition-all duration-300 flex items-center justify-center
+            ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-black hover:bg-gray-800"
+            }`}
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Logging in...
+              </span>
+            ) : (
+              "Login"
+            )}
+          </button>
+
+          {/* Footer */}
+          <p
+            className="text-center text-sm text-gray-500 cursor-pointer hover:text-black transition"
+            onClick={() => router.push("/register")}
+          >
+            Don’t have an account? <span className="font-medium text-blue-600 hover:underline">Sign up</span>
+          </p>
+        </div>
       </div>
     </div>
   );
