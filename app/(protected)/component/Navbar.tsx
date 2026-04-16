@@ -9,8 +9,8 @@ export default function Navbar() {
   const linkClass = (path: string) =>
     `px-3 py-1.5 rounded-md cursor-pointer transition ${
       pathname === path
-        ? "bg-black text-white font-medium"
-        : "text-gray-600 hover:text-black"
+        ? "bg-[#0E73F6] text-white font-medium"
+        : "text-[#333333] hover:text-[#0E73F6]"
     }`;
     
 const handleLogout = async () => {
@@ -24,7 +24,11 @@ const handleLogout = async () => {
 
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-6 py-4 border-b bg-white gap-3">
-      <h1 className="text-lg font-semibold">Shreyansh's Interv AI</h1>
+      <h1 className="text-lg font-semibold">
+  <span className="text-[#5CA8DA]">S</span>
+  <span className="text-black">hreyansh's Interv</span>
+  <span className="text-[#5CA8DA]">AI</span>
+</h1>
 
       <div className="flex flex-wrap items-center gap-3 md:gap-6">
         <span onClick={() => router.push("/home")} className={linkClass("/home")}>
