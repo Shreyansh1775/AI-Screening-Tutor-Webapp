@@ -49,12 +49,12 @@ const handleLogout = async () => {
           Reports
         </span>
 
-        <span
+        {/* <span
           onClick={() => router.push("/profile")}
           className={linkClass("/profile")}
         >
           Profile
-        </span>
+        </span> */}
 
         <button
           onClick={handleLogout}
