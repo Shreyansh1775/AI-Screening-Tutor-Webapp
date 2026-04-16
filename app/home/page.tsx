@@ -16,7 +16,7 @@ export default function HomePage() {
 
 
       {/* White Blur Overlay */}
-        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-white/25 backdrop-blur-sm"></div>
 
 
 
