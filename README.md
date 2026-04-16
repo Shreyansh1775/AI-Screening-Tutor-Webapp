@@ -1,265 +1,188 @@
-# 🎓 AI Tutor Screener
+# 🚀 AI Interview Screener — Intelligent Voice-Based Interview Platform
 
-### Intelligent Voice-Based AI Interview & Evaluation System
-
-> An AI-powered screening platform that conducts tutor interviews through real voice interaction, analyzes communication skills, and generates structured hiring evaluations.
+An AI-powered **real-time interview simulation platform** that evaluates candidates through  **voice interaction, conversational AI, and behavioral analysis** . The system mimics a real interview environment where users speak naturally while an AI interviewer dynamically responds, analyzes, and evaluates performance.
 
 ---
 
-## 🚀 Project Overview
+## 📌 Key Highlights
 
-**AI Tutor Screener** simulates the first round of tutor interviews traditionally conducted by human interviewers.
-
-Instead of manual screening calls, candidates interact with an **AI interviewer** that:
-
-* asks interview questions,
-* listens to spoken answers,
-* evaluates teaching ability,
-* analyzes behavioural signals,
-* generates hiring feedback automatically.
-
-This system demonstrates how AI can scale tutor recruitment while maintaining evaluation quality and consistency.
+* 🎤 Real-time **voice-based AI interview system**
+* 🧠 Dynamic **LLM-powered question generation**
+* 🗣 Speech-to-text + text-to-speech conversational loop
+* 📊 Automated **candidate evaluation system**
+* 🎥 Integrated **live camera module for behavioral tracking**
+* 🔐 Secure authentication with session-based login system
+* ⚡ Full-stack production-ready architecture (Next.js + Node.js + MongoDB)
 
 ---
 
-## 🎯 Problem Statement
+## 🧱 Tech Stack
 
-Tutor screening at scale introduces challenges:
-
-* High interviewer workload
-* Inconsistent evaluations
-* Slow candidate processing
-* Difficulty assessing soft skills remotely
-
-The goal was to design an AI system capable of performing **human-like preliminary interviews** focused on communication and teaching capability.
-
----
-
-## ✨ Key Features
-
-### 🗣️ Voice-Based AI Interview
-
-* AI asks questions verbally
-* Candidate responds using microphone
-* Real-time speech transcription
-* Natural conversation flow
-* Manual submission control
-
----
-
-### 🤖 Conversational AI Interviewer
-
-* Context-aware questioning
-* Maintains interview history
-* Dynamic AI responses
-* Teaching-focused evaluation prompts
-
----
-
-### 🎥 Camera-Based Presence Panel
-
-* Live webcam feed during interview
-* Simulates real interviewer observation
-* Foundation for:
-  * confidence detection
-  * facial expression analysis
-  * engagement tracking
-
----
-
-### 🧠 AI Evaluation Engine
-
-After interview completion, the system generates structured feedback:
-
-* Communication clarity
-* Teaching explanation ability
-* Confidence indicators
-* Fluency assessment
-* Behavioural observations
-* Hiring recommendation
-
----
-
-### 📊 Interview Progress Tracking
-
-* Question progress indicator
-* Live status monitoring
-* Listening / Thinking / Speaking states
-
----
-
-### 🔊 Speech Interaction System
-
-* Speech-to-Text recognition
-* Text-to-Speech AI responses
-* Controlled microphone lifecycle
-* Prevents speech interruption issues
-
----
-
-### 🧩 Robust Interview State Management
-
-Handles real-world edge cases:
-
-* speech cancellation
-* browser navigation
-* microphone cleanup
-* async audio conflicts
-* partial responses
-
----
-
-## 🏗️ System Architecture
-
-<pre class="overflow-visible! px-0!" data-start="2711" data-end="2968"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute end-1.5 top-1 z-2 md:end-2 md:top-1"></div><div class="relative"><div class="pe-11 pt-3"><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span>User (Voice + Camera)</span><br/><span>        │</span><br/><span>        ▼</span><br/><span>Next.js Frontend</span><br/><span>(Interview UI + Speech + Camera)</span><br/><span>        │</span><br/><span>        ▼</span><br/><span>API Routes</span><br/><span> ├── /api/interview</span><br/><span> └── /api/evaluate</span><br/><span>        │</span><br/><span>        ▼</span><br/><span>AI Model Evaluation</span><br/><span>        │</span><br/><span>        ▼</span><br/><span>Structured Interview Report</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
+### 🖥 Frontend
 
 * **Next.js (App Router)**
-* **React + TypeScript**
-* Tailwind CSS
-* Web Speech API
-* Web Camera API
+* **React.js**
+* **TypeScript**
+* **Tailwind CSS**
+* Web Speech API (SpeechRecognition + SpeechSynthesis)
 
-### Backend
+### ⚙ Backend
 
-* Next.js API Routes
-* Server-side AI processing
-* Secure environment variables
+* **Node.js**
+* **Next.js API Routes**
+* **Express-style API architecture (within Next.js)**
+* REST APIs
 
-### AI Capabilities
+### 🗄 Database
 
-* Conversational reasoning
-* Structured evaluation generation
-* Evidence extraction from dialogue
+* **MongoDB**
+* **Mongoose ODM**
+* GridFS (for future media storage support)
+
+### 🔐 Authentication & Security
+
+* Session-based authentication
+* `express-session` + secure cookie handling
+* Protected routes using middleware
+* Input validation to prevent unnecessary DB calls
+
+---
+
+## 🧠 Core Features
+
+### 🎤 AI Interview Engine
+
+* Conversational interview flow
+* AI generates contextual follow-up questions
+* Maintains conversation history for contextual understanding
+
+### 🗣 Voice Interaction System
+
+* Real-time speech recognition
+* Continuous transcript streaming
+* AI voice responses using speech synthesis
+* Natural interview-like flow
+
+### 📹 Camera Integration Module
+
+* Live webcam feed during interview
+* UI-ready emotion/behavior analysis panel (extensible)
+* Square 1:1 responsive camera frame
+* Designed for future ML-based expression detection
+
+### 📊 Evaluation System
+
+* AI-generated performance evaluation
+* Stores full transcript history
+* Produces structured feedback report
+* Saves results to MongoDB for future retrieval
+
+### 🔐 Authentication System
+
+* Secure login/register flow
+* Email format validation
+* Password strength validation
+* Prevention of unnecessary API calls (frontend validation layer)
+
+### 🧭 UX / UI Enhancements
+
+* Responsive split-panel layout
+* Real-time interview status indicators:
+  * Listening 🎤
+  * Thinking 🧠
+  * Speaking 🔊
+* Clean dashboard-like interface
+* Background blur + modern UI card system
+
+---
+
+## 🏗 System Architecture
+
+<pre class="overflow-visible! px-0!" data-start="2893" data-end="3101"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute end-1.5 top-1 z-2 md:end-2 md:top-1"></div><div class="relative"><div class="pe-11 pt-3"><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span>User (Browser)</span><br/><span>   ↓</span><br/><span>Next.js Frontend (React UI + Voice Engine)</span><br/><span>   ↓</span><br/><span>API Routes (Next.js Backend Layer)</span><br/><span>   ↓</span><br/><span>AI Interview Engine (Question Generation Logic)</span><br/><span>   ↓</span><br/><span>MongoDB (User + Interview Data Storage)</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
 
 ---
 
 ## 📂 Project Structure
 
-<pre class="overflow-visible! px-0!" data-start="3351" data-end="3618"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute end-1.5 top-1 z-2 md:end-2 md:top-1"></div><div class="relative"><div class="pe-11 pt-3"><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span>ai-tutor-screener/</span><br/><span>│</span><br/><span>├── app/</span><br/><span>│   ├── api/</span><br/><span>│   │   ├── interview/</span><br/><span>│   │   └── evaluate/</span><br/><span>│   ├── interview/</span><br/><span>│   ├── report/</span><br/><span>│   └── components/</span><br/><span>│       └── CameraPanel.tsx</span><br/><span>│</span><br/><span>├── lib/</span><br/><span>│   └── speech.ts</span><br/><span>│</span><br/><span>├── public/</span><br/><span>├── .env.local</span><br/><span>├── package.json</span><br/><span>└── README.md</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
+<pre class="overflow-visible! px-0!" data-start="3133" data-end="3445"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute end-1.5 top-1 z-2 md:end-2 md:top-1"></div><div class="relative"><div class="pe-11 pt-3"><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span>app/</span><br/><span> ├── (protected)/</span><br/><span> │    ├── interview/</span><br/><span> │    ├── component/</span><br/><span> │    │     ├── CameraPanel.tsx</span><br/><span> │</span><br/><span> ├── login/</span><br/><span> ├── register/</span><br/><span> ├── home/</span><br/><span> ├── report/</span><br/><span> ├── api/</span><br/><span> │    ├── auth/</span><br/><span> │    ├── interview/</span><br/><span> │    ├── evaluate/</span><br/><br/><span>lib/</span><br/><span> ├── speech.ts</span><br/><span> ├── mongodb.ts</span><br/><span> ├── auth.ts</span><br/><br/><span>models/</span><br/><span> ├── User.ts</span><br/><span> ├── Report.ts</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
 
 ---
 
-## ⚙️ Installation & Setup
+## 🔄 Interview Flow
 
-### 1️⃣ Clone Repository
-
-<pre class="overflow-visible! px-0!" data-start="3679" data-end="3776"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute inset-x-4 top-12 bottom-4"><div class="pointer-events-none sticky z-40 shrink-0 z-1!"><div class="sticky bg-token-border-light"></div></div></div><div class="relative"><div class=""><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span class="ͼd">git</span><span> clone https://github.com/Shreyansh1775/ai-tutor-screener.git</span><br/><span class="ͼd">cd</span><span> ai-tutor-screener</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
-
----
-
-### 2️⃣ Install Dependencies
-
-<pre class="overflow-visible! px-0!" data-start="3813" data-end="3836"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute inset-x-4 top-12 bottom-4"><div class="pointer-events-none sticky z-40 shrink-0 z-1!"><div class="sticky bg-token-border-light"></div></div></div><div class="relative"><div class=""><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span class="ͼd">npm</span><span> install</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
-
----
-
-### 3️⃣ Configure Environment Variables
-
-Create `.env.local`
-
-<pre class="overflow-visible! px-0!" data-start="3905" data-end="3948"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute inset-x-4 top-12 bottom-4"><div class="pointer-events-none sticky z-40 shrink-0 z-1!"><div class="sticky bg-token-border-light"></div></div></div><div class="relative"><div class=""><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span>OPENAI_API_KEY=your_api_key_here</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
+1. User logs in / registers
+2. Enters interview dashboard
+3. AI starts interview with greeting question
+4. User responds via voice
+5. Speech is converted to text in real-time
+6. AI processes response and generates next question
+7. Loop continues for defined number of questions
+8. Final evaluation is generated
+9. Report stored and displayed
 
 ---
 
-### 4️⃣ Run Development Server
+## 🧪 Input Validation & Optimization
 
-<pre class="overflow-visible! px-0!" data-start="3987" data-end="4010"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute inset-x-4 top-12 bottom-4"><div class="pointer-events-none sticky z-40 shrink-0 z-1!"><div class="sticky bg-token-border-light"></div></div></div><div class="relative"><div class=""><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span class="ͼd">npm</span><span> run dev</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
-
-Open:
-
-<pre class="overflow-visible! px-0!" data-start="4019" data-end="4048"><div class="relative w-full mt-4 mb-1"><div class=""><div class="relative"><div class="h-full min-h-0 min-w-0"><div class="h-full min-h-0 min-w-0"><div class="border border-token-border-light border-radius-3xl corner-superellipse/1.1 rounded-3xl"><div class="h-full w-full border-radius-3xl bg-token-bg-elevated-secondary corner-superellipse/1.1 overflow-clip rounded-3xl lxnfua_clipPathFallback"><div class="pointer-events-none absolute end-1.5 top-1 z-2 md:end-2 md:top-1"></div><div class="relative"><div class="pe-11 pt-3"><div class="relative z-0 flex max-w-full"><div id="code-block-viewer" dir="ltr" class="q9tKkq_viewer cm-editor z-10 light:cm-light dark:cm-light flex h-full w-full flex-col items-stretch ͼ5 ͼj"><div class="cm-scroller"><div class="cm-content q9tKkq_readonly"><span>http://localhost:3000</span></div></div></div></div></div></div></div></div></div></div><div class=""><div class=""></div></div></div></div></div></pre>
-
----
-
-## 🧑‍💻 How the Interview Works
-
-1. AI greets candidate.
-2. AI speaks interview question.
-3. Microphone activates automatically.
-4. Candidate answers verbally.
-5. Live transcript appears.
-6. Candidate clicks  **Submit Answer** .
-7. AI asks next question.
-8. Final evaluation report generated.
+* Email format validation using regex
+* Password strength enforcement
+* Prevents empty API requests
+* Button disabled until valid form state
+* Reduces unnecessary MongoDB traffic
 
 ---
 
-## 🎯 Evaluation Criteria
+## 🎯 Performance Considerations
 
-The AI analyzes:
-
-* Clarity of explanation
-* Teaching friendliness
-* Communication structure
-* Confidence level
-* Student empathy
-* Language fluency
+* Optimized React state management using `useRef` for stable references
+* Reduced re-renders during speech streaming
+* Controlled API calls based on interview state
+* Lazy speech processing for smooth UX
 
 ---
 
-## 🔐 Security Practices
+## 🔐 Security Considerations
 
-* API keys stored server-side
-* No secrets exposed to client
-* Backend-only AI communication
-* Production-safe environment configuration
-
----
-
-## 🧪 Engineering Challenges Solved
-
-* Synchronizing speech recognition & AI speech
-* Preventing microphone conflicts
-* Handling browser speech abort errors
-* Managing async interview lifecycle
-* Maintaining conversation context reliably
+* Protected interview routes via middleware
+* Session-based authentication (no token leakage)
+* Server-side validation for auth endpoints
+* Input sanitization before database operations
+* No direct frontend DB access
 
 ---
 
-## 🌟 Why This Project Stands Out
+## 📈 Future Enhancements
 
-✅ Voice-first interaction (not chatbot UI)
-
-✅ Real interview simulation
-
-✅ Behavioural evaluation focus
-
-✅ Production-like UX
-
-✅ Scalable hiring concept
-
-This project demonstrates both **software engineering execution** and  **product thinking** .
+* 🎭 Emotion detection via webcam (ML integration)
+* 📊 Advanced analytics dashboard
+* 🧠 Multi-model AI interviewer support
+* 📁 Resume-based adaptive questioning
+* 🌐 Multi-language interview support
+* 📡 Real-time interview monitoring panel for admins
 
 ---
 
-## 🔮 Future Improvements
+## 🖼 UI Design Philosophy
 
-* Facial emotion recognition
-* Eye-contact analysis
-* Speech pace scoring
-* Recruiter dashboard
-* Candidate analytics database
-* Multi-language interviews
-* Adaptive questioning
-
----
-
-## 📸 Demo
-
-👉 Live Application: *https://ai-screening-tutor-webapp.vercel.app/*
-
-👉 Demo Video: *https://drive.google.com/drive/folders/1-dwUXddX_JI56dVhfOCXiL9ky0F6AO3F?usp=drive_link*
+* Minimalistic interview environment
+* Focus on user speaking experience
+* Dual-panel layout:
+  * Left: Conversation stream
+  * Right: Control + Camera + Insights
+* Designed to simulate real interview pressure
 
 ---
 
-## 👤 Author
+## 👨‍💻 Author
 
-**Shreyansh Kumar Jha**
+**Rish**
 
-B.Tech Engineering Graduate
+AI Interview Screener Project
+
+Built for recruitment evaluation and technical assessment
+
+---
+
+## 📜 License
+
+This project is intended for educational and evaluation purposes.
